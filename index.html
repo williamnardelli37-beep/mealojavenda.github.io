@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loja M&A</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Lato', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fcfcfc;
+            color: #111;
+            line-height: 1.8;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .hero {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(5px);
+            color: #111;
+            text-align: center;
+            padding: 100px 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            margin-bottom: 40px;
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+        }
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5em;
+            margin-bottom: 15px;
+            color: #000;
+        }
+        .hero p {
+            font-size: 1.4em;
+            opacity: 0.8;
+            max-width: 700px;
+            margin: 0 auto;
+            font-weight: 300;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        .section {
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(3px);
+            padding: 80px;
+            margin-bottom: 50px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        .section h2 {
+            font-family: 'Playfair Display', serif;
+            text-align: center;
+            color: #000;
+            font-size: 2.5em;
+            margin-bottom: 50px;
+        }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 50px;
+        }
+        .product-item {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            text-align: center;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            cursor: pointer;
+        }
+        .product-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+        .product-item .product-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+            display: block;
+        }
+        .product-item h3 {
+            font-family: 'Playfair Display', serif;
+            color: #000;
+            font-size: 1.8em;
+            font-weight: 500;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        .product-item p {
+            font-size: 1em;
+            font-weight: 300;
+            color: #555;
+            margin-bottom: 15px;
+        }
+        .product-price {
+            font-size: 1.6em;
+            color: #004d99;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        .delivery-notice {
+            font-size: 0.9em;
+            color: #c00;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .btn-add-to-cart {
+            background-color: #000;
+            color: #fff;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+        .btn-add-to-cart:hover {
+            background-color: #333;
+            transform: scale(1.05);
+        }
+        .product-link {
+            text-decoration: none;
+            color: inherit;
+        }
+        .no-cursor {
+            cursor: default;
+        }
+        
+        /* --- Estilos para o Carrinho e Form --- */
+        .form-section {
+            padding: 40px;
+            margin-bottom: 50px;
+        }
+        .form-section input {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1em;
+            font-family: 'Lato', Arial, sans-serif;
+            transition: border-color 0.3s ease;
+        }
+        .form-section input:focus {
+            outline: none;
+            border-color: #004d99;
+        }
+        .cart-section {
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(3px);
+            padding: 40px;
+            margin: 50px auto;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        .cart-section h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2em;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .cart-list {
+            list-style: none;
+            padding: 0;
+            border-top: 1px solid #ccc;
+        }
+        .cart-item {
+            padding: 20px 0;
+            border-bottom: 1px dashed #ccc;
+        }
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+        .cart-item-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+        .cart-item-details input {
+            flex-grow: 1;
+            margin-left: 20px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 0.9em;
+            font-family: 'Lato', Arial, sans-serif;
+            transition: border-color 0.3s ease;
+        }
+        .cart-item-details input:focus {
+            outline: none;
+            border-color: #004d99;
+        }
+        .remove-btn {
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8em;
+            margin-left: 15px;
+            transition: background-color 0.3s ease;
+        }
+        .remove-btn:hover {
+            background-color: #c82333;
+        }
+        .promo-code-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        .promo-code-container input {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-right: 10px;
+            font-size: 1em;
+            width: 150px;
+        }
+        .promo-code-container button {
+            background-color: #004d99;
+            color: #fff;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        .promo-code-container button:hover {
+            background-color: #003366;
+        }
+        .cart-totals {
+            text-align: right;
+            font-size: 1.2em;
+            margin-top: 20px;
+            line-height: 1.8;
+        }
+        .cart-totals .final-price {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #28a745;
+        }
+        .whatsapp-btn, .contract-btn {
+            display: inline-block;
+            background-color: #25D366;
+            color: #fff;
+            padding: 15px;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-top: 30px;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .whatsapp-btn:hover {
+            background-color: #128C7E;
+        }
+        .contract-btn {
+            background-color: #000;
+            color: #fff;
+            margin-left: 10px;
+        }
+        .contract-btn:hover {
+            background-color: #333;
+        }
+        .discount-applied {
+            color: #28a745;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 1em;
+        }
+        
+        .how-it-works-list {
+            list-style-type: none;
+            padding: 0;
+            text-align: center;
+        }
+        .how-it-works-list li {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+        .how-it-works-list li:hover {
+            transform: scale(1.02);
+        }
+        .how-it-works-list .step-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 2em;
+            color: #004d99;
+            font-weight: bold;
+        }
+
+        /* New Sections */
+        .why-us-grid, .intuitive-grid, .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            text-align: center;
+        }
+        .why-us-item, .intuitive-item, .testimonial-item {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+        .why-us-item:hover, .intuitive-item:hover, .testimonial-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+        }
+        .why-us-item .icon, .intuitive-item .icon {
+            font-size: 3em;
+            color: #004d99;
+            margin-bottom: 15px;
+        }
+        
+        .faq-item {
+            border-bottom: 1px solid #ddd;
+            padding: 20px 0;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .faq-item:hover {
+            background-color: #f9f9f9;
+        }
+        .faq-question {
+            font-family: 'Lato', Arial, sans-serif;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+            padding-top: 0;
+            color: #555;
+        }
+        .faq-item.active .faq-answer {
+            max-height: 200px; /* Adjust as needed */
+            padding-top: 20px;
+        }
+        .faq-item.active .faq-question::after {
+            content: '-';
+        }
+        .faq-question::after {
+            content: '+';
+            font-size: 1.5em;
+            color: #555;
+            margin-left: 10px;
+            transition: transform 0.3s ease;
+        }
+        .faq-item.active .faq-question::after {
+            transform: rotate(45deg);
+        }
+        
+        .newsletter-section, .review-section, .contract-section {
+            text-align: center;
+        }
+        .newsletter-section h3, .review-section h3, .contract-section h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+        .newsletter-form, .review-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        .newsletter-form input[type="email"], .review-form input, .review-form textarea {
+            padding: 15px;
+            width: 100%;
+            max-width: 350px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        .newsletter-form button, .review-form button {
+            background-color: #000;
+            color: #fff;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .newsletter-form button:hover, .review-form button:hover {
+            background-color: #333;
+        }
+        .rating-stars {
+            font-size: 2em;
+            cursor: pointer;
+            color: #ccc;
+        }
+        .rating-stars span.filled {
+            color: gold;
+        }
+
+        .contract-content {
+            text-align: left;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            white-space: pre-wrap;
+            background-color: #f9f9f9;
+            font-size: 0.9em;
+            margin-top: 20px;
+        }
+        
+        .testimonial-item {
+            text-align: center;
+        }
+        .testimonial-quote {
+            font-size: 1.1em;
+            font-style: italic;
+            color: #555;
+            margin-bottom: 15px;
+        }
+        .testimonial-author {
+            font-weight: bold;
+            font-size: 1.2em;
+            color: #000;
+        }
+
+        .about-us-content {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 1.1em;
+        }
+        
+        /* Footer and Social Icons */
+        footer {
+            background-color: #111;
+            color: #fff;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        .social-icons a {
+            color: #fff;
+            font-size: 1.5em;
+            margin: 0 15px;
+            transition: color 0.3s ease;
+        }
+        .social-icons a:hover {
+            color: #004d99;
+        }
+        footer p {
+            margin-top: 20px;
+            font-size: 0.9em;
+            opacity: 0.7;
+        }
+
+        /* --- Estilos para Pop-ups e Cookies --- */
+        .promo-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 500px;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            color: #111;
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            z-index: 1000;
+            text-align: center;
+            animation: fadeIn 0.5s ease-out;
+        }
+        .promo-popup h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5em;
+            margin-top: 0;
+            color: #000;
+            font-weight: 500;
+        }
+        .promo-popup p {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+        .promo-popup .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 2em;
+            color: #111;
+            cursor: pointer;
+        }
+        .promo-popup a {
+            background-color: #000;
+            color: #fff;
+            padding: 15px 35px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .promo-popup a:hover {
+            background-color: #333;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translate(-50%, -60%); }
+            to { opacity: 1; transform: translate(-50%, -50%); }
+        }
+        .cookie-consent {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            color: #fff;
+            text-align: center;
+            padding: 15px 20px;
+            font-size: 0.9em;
+            z-index: 999;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+        .cookie-consent button {
+            background-color: #fff;
+            color: #000;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 15px;
+            text-transform: uppercase;
+        }
+        .cookie-consent button:hover {
+            background-color: #ddd;
+        }
+        .cancellation-section {
+            margin-top: 50px;
+            text-align: center;
+        }
+        .cancellation-section input {
+            max-width: 300px;
+            margin-bottom: 20px;
+        }
+        .cancellation-section button {
+            background-color: #dc3545;
+            color: #fff;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+        .cancellation-section button:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    
+    <main id="main-content">
+        <header class="hero">
+            <h1>Loja M&A</h1>
+            <p>Soluções tecnológicas sob medida para o seu negócio.</p>
+            <a href="#carrinho" class="cta-button">Ver Carrinho</a>
+        </header>
+
+        <div class="container">
+
+            <section class="section">
+                <h2>Nossos Produtos</h2>
+                <div class="product-grid">
+                    
+                    <div class="product-item" onclick="addToCart('Portfólio Profissional', 50.00)">
+                        <span class="product-icon">💼</span>
+                        <h3>Portfólio Profissional</h3>
+                        <p>Criamos um portfólio digital personalizado para você, do seu jeito. Destaque seus projetos e habilidades de forma única.</p>
+                        <p class="product-price">R$ 50,00</p>
+                        <p class="delivery-notice">Aviso: Prazo a combinar.</p>
+                        <button class="btn-add-to-cart">Adicionar</button>
+                    </div>
+
+                    <div class="product-item" onclick="addToCart('Ponto para Funcionário', 200.00)">
+                        <span class="product-icon">⏰</span>
+                        <h3>Ponto para Funcionário</h3>
+                        <p>Sistema digital e eficiente para controle de jornada de trabalho e gestão de ponto.</p>
+                        <p class="product-price">R$ 200,00</p>
+                        <p class="delivery-notice">Aviso: 2 meses de espera.</p>
+                        <button class="btn-add-to-cart">Adicionar</button>
+                    </div>
+                    <div class="product-item" onclick="addToCart('M&A Professor', 0.00)">
+                        <span class="product-icon">📚</span>
+                        <h3>M&A Professor</h3>
+                        <p>Plataforma de ensino online. Em fase **beta**, lançamento em **outubro**.</p>
+                        <p class="product-price">Grátis</p>
+                        <p class="delivery-notice">Em desenvolvimento. Disponível em breve!</p>
+                        <button class="btn-add-to-cart">Adicionar</button>
+                    </div>
+                    <div class="product-item" onclick="addToCart('Avaliador de Produtos', 350.00)">
+                        <span class="product-icon">⭐</span>
+                        <h3>Avaliador de Produtos</h3>
+                        <p>Sistema de reviews e avaliações de produtos sob medida para e-commerces.</p>
+                        <p class="product-price">R$ 350,00</p>
+                        <p class="delivery-notice">Aviso: 2 meses de espera.</p>
+                        <button class="btn-add-to-cart">Adicionar</button>
+                    </div>
+                    <div class="product-item" onclick="addToCart('Website Institucional', 500.00)">
+                        <span class="product-icon">🌐</span>
+                        <h3>Website Institucional</h3>
+                        <p>Criação de sites modernos e responsivos para divulgar sua empresa na web.</p>
+                        <p class="product-price">R$ 500,00</p>
+                        <p class="delivery-notice">Aviso: 2 meses de espera.</p>
+                        <button class="btn-add-to-cart">Adicionar</button>
+                    </div>
+                    <a href="https://williamnardelli37-beep.github.io/.aislidepro.github.io/" target="_blank" class="product-link">
+                        <div class="product-item no-cursor">
+                            <span class="product-icon">🤖</span>
+                            <h3>AI Slide PRO</h3>
+                            <p>Plataforma para criar apresentações dinâmicas e profissionais com inteligência artificial.</p>
+                            <p class="product-price">Grátis</p>
+                            <button class="btn-add-to-cart">Acessar Grátis</button>
+                        </div>
+                    </a>
+                </div>
+            </section>
+            
+            <section class="section cart-section" id="carrinho">
+                <h2>Seu Carrinho</h2>
+                <ul id="cartList" class="cart-list">
+                    </ul>
+                <div class="cart-totals">
+                    <p>Subtotal: <span id="cartSubtotal">R$ 0,00</span></p>
+                    <p>Desconto: <span id="cartDiscount">R$ 0,00</span></p>
+                    <p class="final-price">Total: <span id="cartTotal">R$ 0,00</span></p>
+                    <p id="deliveryDate" style="font-weight: bold;"></p>
+                </div>
+                <hr style="margin: 20px 0; border: 0; border-top: 1px dashed #ccc;">
+                <div class="promo-code-container">
+                    <input type="text" id="promoCodeInput" placeholder="Código Promocional">
+                    <button onclick="applyPromoCode()">Aplicar</button>
+                </div>
+                <p id="discountMessage" class="discount-applied" style="display:none;"></p>
+            </section>
+
+            <section class="section form-section" id="contato">
+                <h2>Seus Dados</h2>
+                <input type="text" id="userName" placeholder="Seu Nome">
+                <input type="email" id="userEmail" placeholder="Seu E-mail">
+                <input type="tel" id="userPhone" placeholder="Seu Telefone (opcional)">
+                <div style="display: flex; justify-content: center; gap: 10px;">
+                    <a href="#contato" class="whatsapp-btn" onclick="sendOrderViaWhatsApp()">
+                        Finalizar Pedido via WhatsApp
+                    </a>
+                    <a href="#contato" class="contract-btn" onclick="generateAndPrintContract()">
+                        Gerar Contrato
+                    </a>
+                </div>
+                <div class="cancellation-section">
+                    <hr style="margin: 50px 0; border: 0; border-top: 1px dashed #ccc;">
+                    <h2>Cancelar Pedido</h2>
+                    <p>
+                        **Atenção:** A compra pode ser cancelada em até **7 dias**.
+                        O código de cancelamento é válido apenas no dispositivo em que a compra foi realizada.
+                    </p>
+                    <input type="text" id="cancellationCodeInput" placeholder="Código de Cancelamento">
+                    <button onclick="cancelOrder()">Cancelar Pedido</button>
+                </div>
+            </section>
+
+            <section class="section how-it-works-section">
+                <h2>Como Funciona</h2>
+                <ul class="how-it-works-list">
+                    <li>
+                        <span class="step-number">1</span>
+                        <h3>Escolha o Serviço</h3>
+                        <p>Adicione ao seu carrinho os produtos ou serviços que você precisa. Para o AI Slide, basta clicar e acessar!</p>
+                    </li>
+                    <li>
+                        <span class="step-number">2</span>
+                        <h3>Preencha Seus Dados</h3>
+                        <p>Informe seu nome e contato para que possamos te atender de forma personalizada.</p>
+                    </li>
+                    <li>
+                        <span class="step-number">3</span>
+                        <h3>Envie seu Pedido</h3>
+                        <p>Ao finalizar, seu pedido será enviado para o nosso WhatsApp. Nossa equipe entrará em contato para alinhar os detalhes e finalizar a compra.</p>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="section">
+                <h2>Por que nos Escolher?</h2>
+                <div class="why-us-grid">
+                    <div class="why-us-item">
+                        <span class="icon">💻</span>
+                        <h3>Tecnologia de Ponta</h3>
+                        <p>Utilizamos as ferramentas mais modernas para criar soluções robustas e seguras para o seu negócio.</p>
+                    </div>
+                    <div class="why-us-item">
+                        <span class="icon">💡</span>
+                        <h3>Soluções Personalizadas</h3>
+                        <p>Criamos produtos que se encaixam perfeitamente na sua necessidade, garantindo resultados únicos.</p>
+                    </div>
+                    <div class="why-us-item">
+                        <span class="icon">🚀</span>
+                        <h3>Entrega Rápida</h3>
+                        <p>Nosso processo otimizado garante a entrega do seu projeto no prazo, sem abrir mão da qualidade.</p>
+                    </div>
+                    <div class="why-us-item">
+                        <span class="icon">🤝</span>
+                        <h3>Suporte Humano</h3>
+                        <p>Você terá uma equipe dedicada para tirar suas dúvidas e garantir que sua experiência seja a melhor possível.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>Sobre Nós</h2>
+                <div class="about-us-content">
+                    <p>
+                        A Loja M&A nasceu da paixão por criar soluções digitais que transformam negócios. Acreditamos que a tecnologia deve ser acessível e intuitiva. Por isso, para construir nossas plataformas e sites, usamos as tecnologias mais confiáveis e flexíveis do mercado: **HTML, CSS e JavaScript**.
+                        <br><br>
+                        Nossas soluções são desenvolvidas para funcionar de forma leve e rápida, utilizando sistemas de **armazenamento local** (Local Storage). Isso significa que seus dados ficam seguros diretamente no seu dispositivo, sem a necessidade de servidores externos. Nosso compromisso é com o seu sucesso!
+                    </p>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>Nosso Foco: Sites Intuitivos</h2>
+                <div class="intuitive-grid">
+                    <div class="intuitive-item">
+                        <span class="icon">🧭</span>
+                        <h3>Navegação Simples</h3>
+                        <p>Criamos menus e fluxos de navegação lógicos, permitindo que seus clientes encontrem o que precisam sem esforço.</p>
+                    </div>
+                    <div class="intuitive-item">
+                        <span class="icon">✨</span>
+                        <h3>Layout Limpo</h3>
+                        <p>Um design organizado e com espaços em branco que direcionam a atenção para o que realmente importa: seus produtos e serviços.</p>
+                    </div>
+                    <div class="intuitive-item">
+                        <span class="icon">📝</span>
+                        <h3>Conteúdo Claro</h3>
+                        <p>Usamos uma linguagem simples e direta. Títulos e listas facilitam a leitura e a compreensão rápida das informações.</p>
+                    </div>
+                    <div class="intuitive-item">
+                        <span class="icon">👍</span>
+                        <h3>Feedback Visual</h3>
+                        <p>Seu site reage às ações do usuário com mensagens e mudanças visuais, garantindo que ele sempre saiba o que está acontecendo.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="section">
+                <h2>Perguntas Frequentes</h2>
+                <div class="faq-container">
+                    <div class="faq-item" onclick="toggleFAQ(this)">
+                        <h4 class="faq-question">Qual é o prazo de entrega para um website institucional?</h4>
+                        <p class="faq-answer">O prazo padrão para a entrega de um website institucional é de 2 meses. Entraremos em contato para acertar todos os detalhes do projeto antes de iniciar o desenvolvimento.</p>
+                    </div>
+                    <div class="faq-item" onclick="toggleFAQ(this)">
+                        <h4 class="faq-question">O AI Slide PRO é realmente gratuito?</h4>
+                        <p class="faq-answer">Sim! O AI Slide PRO é uma plataforma que está disponível gratuitamente para todos os nossos clientes. Basta acessar o link na página de produtos e começar a criar suas apresentações.</p>
+                    </div>
+                    <div class="faq-item" onclick="toggleFAQ(this)">
+                        <h4 class="faq-question">Como funciona o processo de pedido?</h4>
+                        <p class="faq-answer">É simples! Você adiciona os produtos ao seu carrinho, preenche seus dados de contato e clica em "Finalizar Pedido via WhatsApp". Nossa equipe receberá sua solicitação e entrará em contato para concluir a negociação e o pagamento.</p>
+                    </div>
+                    <div class="faq-item" onclick="toggleFAQ(this)">
+                        <h4 class="faq-question">Posso usar o código promocional em qualquer produto?</h4>
+                        <p class="faq-answer">O código promocional é válido para qualquer produto pago na nossa loja. Ele garante um desconto de 15% sobre o valor total do seu carrinho, sem incluir o AI Slide PRO, que é gratuito.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section newsletter-section">
+                <h2>Receba Novidades</h2>
+                <p>Assine nossa newsletter e fique por dentro de todos os lançamentos e promoções!</p>
+                <div class="newsletter-form">
+                    <input type="email" id="newsletterEmail" placeholder="Digite seu e-mail" required>
+                    <button onclick="subscribeNewsletter()">Inscrever-se</button>
+                </div>
+            </section>
+            
+            <section class="section review-section">
+                <h2>Deixe sua Avaliação</h2>
+                <p>Compartilhe sua experiência e nos ajude a melhorar!</p>
+                <div class="review-form">
+                    <div class="rating-stars" id="ratingStars">
+                        <span data-value="1">★</span>
+                        <span data-value="2">★</span>
+                        <span data-value="3">★</span>
+                        <span data-value="4">★</span>
+                        <span data-value="5">★</span>
+                    </div>
+                    <input type="text" id="reviewerName" placeholder="Seu nome (opcional)">
+                    <textarea id="reviewComment" rows="4" placeholder="Deixe seu comentário..."></textarea>
+                    <button onclick="sendReview()">Enviar Avaliação</button>
+                </div>
+            </section>
+        </div>
+    </main>
+    
+    <section class="contract-section" style="display:none; text-align: left; padding: 50px; font-family: 'Times New Roman', serif;">
+        <div class="contract-content-container">
+            <h2 style="text-align: center; margin-bottom: 5px;">Contrato de Compra e Venda</h2>
+            <p style="text-align: center; font-style: italic; font-size: 1em;">Gerado em <span id="contractDate"></span></p>
+            <div class="contract-content" id="contractContent" style="white-space: pre-wrap; line-height: 1.5;"></div>
+        </div>
+    </section>
+    
+    <div id="promoPopup" class="promo-popup">
+        <span class="close-btn" onclick="closePopup()">&times;</span>
+        <h3>Quer um Site Incrível?</h3>
+        <p>Receba uma consultoria gratuita para seu projeto e garanta 15% de desconto no seu primeiro serviço!</p>
+        <a href="https://wa.me/5554993243670?text=Olá, vim do seu site e gostaria de saber mais sobre a promoção de Desenvolvimento Web!" target="_blank" onclick="closePopup()">Falar no WhatsApp!</a>
+    </div>
+
+    <div id="cookieConsent" class="cookie-consent">
+        <p>Nós usamos cookies para melhorar sua experiência no site. Ao continuar, você concorda com o uso de cookies.</p>
+        <button onclick="acceptCookies()">Entendi</button>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Loja M&A. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        let cart = [];
+        let discount = 0;
+        const promoCode = "MUNDODASAVALIACOES2025";
+        const discountRate = 0.15;
+        const phoneNumber = "5554993243670"; // Seu número de WhatsApp
+
+        function updateCart() {
+            const cartList = document.getElementById('cartList');
+            cartList.innerHTML = '';
+            
+            let subtotal = 0;
+            
+            if (cart.length === 0) {
+                cartList.innerHTML = '<p style="text-align: center; color: #555;">Nenhum item no carrinho.</p>';
+            } else {
+                cart.forEach((item, index) => {
+                    const li = document.createElement('li');
+                    li.className = 'cart-item';
+                    li.innerHTML = `
+                        <div class="cart-item-details">
+                            <span>${item.name} - R$ ${item.price.toFixed(2).replace('.', ',')}</span>
+                            <button class="remove-btn" onclick="removeFromCart(${index})">Remover</button>
+                        </div>
+                        <input type="text" placeholder="Adicione uma descrição..." id="desc-${index}">
+                    `;
+                    cartList.appendChild(li);
+                    subtotal += item.price;
+                });
+            }
+            
+            document.getElementById('cartSubtotal').textContent = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
+            calculateTotals(subtotal);
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCart();
+        }
+
+        function calculateTotals(subtotal) {
+            let finalTotal = subtotal;
+            let discountAmount = 0;
+
+            if (discount > 0) {
+                discountAmount = subtotal * discount;
+                finalTotal = subtotal - discountAmount;
+            }
+
+            document.getElementById('cartDiscount').textContent = `R$ ${discountAmount.toFixed(2).replace('.', ',')}`;
+            document.getElementById('cartTotal').textContent = `R$ ${finalTotal.toFixed(2).replace('.', ',')}`;
+            
+            if (hasPaidItem()) {
+                document.getElementById('deliveryDate').textContent = 'Previsão de Entrega: ' + calculateDeliveryDate();
+            } else {
+                document.getElementById('deliveryDate').textContent = '';
+            }
+        }
+
+        function hasPaidItem() {
+            return cart.some(item => item.price > 0);
+        }
+
+        function calculateDeliveryDate() {
+            const today = new Date();
+            // Adiciona 2 meses à data atual
+            today.setMonth(today.getMonth() + 2);
+            
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return today.toLocaleDateString('pt-BR', options);
+        }
+
+        function addToCart(productName, productPrice) {
+            cart.push({ name: productName, price: productPrice, description: '' });
+            updateCart();
+            alert(`${productName} adicionado ao carrinho!`);
+        }
+
+        function applyPromoCode() {
+            const code = document.getElementById('promoCodeInput').value.trim().toUpperCase();
+            const discountMessage = document.getElementById('discountMessage');
+            
+            if (code === promoCode) {
+                discount = discountRate;
+                discountMessage.textContent = `Código '${promoCode}' aplicado! Você ganhou 15% de desconto.`;
+                discountMessage.style.display = 'block';
+            } else {
+                discount = 0;
+                discountMessage.textContent = "Código inválido.";
+                discountMessage.style.display = 'block';
+            }
+            
+            updateCart();
+        }
+
+        function generateCancellationCode() {
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let result = '';
+            const charactersLength = characters.length;
+            for (let i = 0; i < 8; i++) {
+                result += characters.charAt(Math.floor(Math.random() * charactersLength));
+            }
+            return result;
+        }
+
+        function sendOrderViaWhatsApp() {
+            if (cart.length === 0) {
+                alert("Seu carrinho está vazio. Adicione produtos antes de finalizar o pedido.");
+                return;
+            }
+
+            const userName = document.getElementById('userName').value.trim();
+            const userEmail = document.getElementById('userEmail').value.trim();
+            const userPhone = document.getElementById('userPhone').value.trim();
+
+            if (!userName || !userEmail) {
+                alert("Por favor, preencha seu nome e e-mail antes de finalizar o pedido.");
+                document.getElementById('userName').focus();
+                return false;
+            }
+            
+            const cancellationCode = generateCancellationCode();
+            const timestamp = new Date().getTime();
+            
+            const orderData = {
+                code: cancellationCode,
+                timestamp: timestamp
+            };
+
+            localStorage.setItem('cancellationOrder', JSON.stringify(orderData));
+
+            let orderMessage = "Olá, gostaria de fazer um pedido!\n\n";
+            orderMessage += `*Dados do Cliente:*\n`;
+            orderMessage += `Nome: ${userName}\n`;
+            orderMessage += `Email: ${userEmail}\n`;
+            if (userPhone) {
+                orderMessage += `Telefone: ${userPhone}\n`;
+            }
+            orderMessage += `\n--- Detalhes do Pedido ---\n\n`;
+
+            cart.forEach((item, index) => {
+                const description = document.getElementById(`desc-${index}`).value.trim();
+                const itemDescription = description ? ` - Obs: "${description}"` : '';
+                orderMessage += `*${item.name}* ${itemDescription}\n`;
+            });
+
+            const subtotal = cart.reduce((sum, item) => sum + item.price, 0);
+            const discountAmount = subtotal * discount;
+            const finalTotal = subtotal - discountAmount;
+
+            orderMessage += "\n--- Totais ---\n";
+            orderMessage += `Subtotal: R$ ${subtotal.toFixed(2).replace('.', ',')}\n`;
+            if (discount > 0) {
+                orderMessage += `Desconto: - R$ ${discountAmount.toFixed(2).replace('.', ',')}\n`;
+                orderMessage += `Código usado: ${promoCode}\n`;
+            }
+            orderMessage += `Total Final: R$ ${finalTotal.toFixed(2).replace('.', ',')}`;
+            orderMessage += `\n\n*Código de Cancelamento:* ${cancellationCode}`;
+            
+            alert(`Pedido finalizado! Seu código de cancelamento é: ${cancellationCode}\nGuarde-o para futuras referências.`);
+
+            const encodedMessage = encodeURIComponent(orderMessage);
+            const whatsappLink = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+            
+            window.open(whatsappLink, '_blank');
+        }
+
+        function cancelOrder() {
+            const inputCode = document.getElementById('cancellationCodeInput').value.trim().toUpperCase();
+            const storedData = JSON.parse(localStorage.getItem('cancellationOrder'));
+
+            if (!storedData) {
+                alert("Nenhum pedido encontrado neste dispositivo.");
+                return;
+            }
+
+            const storedCode = storedData.code;
+            const storedTimestamp = storedData.timestamp;
+            const sevenDaysInMs = 7 * 24 * 60 * 60 * 1000;
+            const now = new Date().getTime();
+
+            if (inputCode !== storedCode) {
+                alert("Código de cancelamento inválido. Verifique o código e tente novamente.");
+                return;
+            }
+
+            if (now - storedTimestamp > sevenDaysInMs) {
+                alert("O código de cancelamento expirou. O prazo de 7 dias para o cancelamento foi excedido.");
+                localStorage.removeItem('cancellationOrder'); // Limpa o código expirado
+                return;
+            }
+            
+            const cancellationMessage = `Olá, gostaria de solicitar o cancelamento do meu pedido. O código de cancelamento é: ${inputCode}`;
+            const encodedMessage = encodeURIComponent(cancellationMessage);
+            const whatsappLink = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+
+            // Abre o WhatsApp com a mensagem pronta
+            window.open(whatsappLink, '_blank');
+            
+            // Limpa o carrinho e o código após o envio da mensagem
+            localStorage.removeItem('cancellationOrder');
+            cart = [];
+            updateCart();
+            document.getElementById('cancellationCodeInput').value = '';
+
+            alert("Sua solicitação de cancelamento foi enviada. Aguarde a confirmação da nossa equipe.");
+        }
+
+        function subscribeNewsletter() {
+            const email = document.getElementById('newsletterEmail').value.trim();
+            if (email === "") {
+                alert("Por favor, insira um e-mail válido.");
+                return;
+            }
+            
+            const newsletterMessage = `Olá, gostaria de me inscrever na newsletter com o e-mail: ${email}`;
+            const encodedMessage = encodeURIComponent(newsletterMessage);
+            const whatsappLink = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+            
+            window.open(whatsappLink, '_blank');
+            alert('Inscrição realizada com sucesso! Obrigado!');
+            document.getElementById('newsletterEmail').value = '';
+        }
+        
+        function sendReview() {
+            const name = document.getElementById('reviewerName').value.trim();
+            const comment = document.getElementById('reviewComment').value.trim();
+            const rating = document.querySelectorAll('.rating-stars .filled').length;
+
+            if (rating === 0) {
+                alert("Por favor, selecione uma nota de 1 a 5 estrelas.");
+                return;
+            }
+
+            if (comment === "") {
+                alert("Por favor, deixe um comentário.");
+                return;
+            }
+            
+            const reviewMessage = `*Nova Avaliação Recebida:*\n\nNome: ${name || 'Anônimo'}\nNota: ${rating} de 5 estrelas\nComentário: "${comment}"`;
+            
+            const encodedMessage = encodeURIComponent(reviewMessage);
+            const whatsappLink = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+            
+            window.open(whatsappLink, '_blank');
+            alert('Sua avaliação foi enviada! Agradecemos o seu feedback.');
+            
+            document.getElementById('reviewerName').value = '';
+            document.getElementById('reviewComment').value = '';
+            document.querySelectorAll('.rating-stars span').forEach(star => star.classList.remove('filled'));
+        }
+
+        // Nova função para preparar a página para impressão
+        function prepareForPrint() {
+            document.getElementById('main-content').style.display = 'none';
+            document.querySelector('.contract-section').style.display = 'block';
+        }
+
+        // Nova função para restaurar a página após a impressão
+        function restoreFromPrint() {
+            document.getElementById('main-content').style.display = 'block';
+            document.querySelector('.contract-section').style.display = 'none';
+        }
+
+        function generateAndPrintContract() {
+            const userName = document.getElementById('userName').value.trim();
+            const userEmail = document.getElementById('userEmail').value.trim();
+            const userPhone = document.getElementById('userPhone').value.trim();
+
+            if (!userName || !userEmail) {
+                alert("Por favor, preencha seu nome e e-mail para gerar o contrato.");
+                document.getElementById('userName').focus();
+                return false;
+            }
+
+            if (cart.length === 0) {
+                alert("Adicione itens ao carrinho antes de gerar o contrato.");
+                return false;
+            }
+
+            const storedData = JSON.parse(localStorage.getItem('cancellationOrder'));
+            const cancellationCode = storedData ? storedData.code : 'Não Gerado';
+
+            const today = new Date().toLocaleDateString('pt-BR');
+            const subtotal = cart.reduce((sum, item) => sum + item.price, 0);
+            const discountAmount = subtotal * discount;
+            const finalTotal = subtotal - discountAmount;
+            
+            let productsList = '';
+            cart.forEach(item => {
+                productsList += `- ${item.name} (R$ ${item.price.toFixed(2).replace('.', ',')})\n`;
+            });
+
+            const contractText = `
+**CONTRATO DE COMPRA E VENDA DE PRODUTOS E SERVIÇOS DIGITAIS**
+
+**IDENTIFICAÇÃO DAS PARTES CONTRATANTES:**
+
+**CONTRATADA:** Loja M&A.
+
+**CONTRATANTE:** ${userName || 'Não informado'}, e-mail: ${userEmail || 'Não informado'}, telefone: ${userPhone || 'Não informado'}.
+
+As partes acima identificadas têm, entre si, justo e acertado o presente Contrato de Compra e Venda de Produtos e Serviços, que se regerá pelas cláusulas seguintes e pelas condições de preço, forma e termo de pagamento descritas no presente.
+
+**CLÁUSULA PRIMEIRA – DO OBJETO**
+O presente contrato tem por objeto os seguintes produtos e/ou serviços:
+${productsList}
+
+**CLÁUSULA SEGUNDA – DO PREÇO E DAS CONDIÇÕES DE PAGAMENTO**
+Pela compra dos produtos e/ou serviços digitais descritos na Cláusula Primeira, o CONTRATANTE pagará à CONTRATADA o valor total de R$ ${finalTotal.toFixed(2).replace('.', ',')}.
+As condições de pagamento serão acordadas diretamente com a CONTRATADA por meio do contato via WhatsApp.
+
+**CLÁUSULA TERCEIRA – DAS OBRIGAÇÕES**
+A CONTRATADA se compromete a entregar os produtos e/ou serviços no prazo acordado de 2 meses, a partir da confirmação do pagamento.
+O CONTRATANTE se compromete a fornecer todas as informações e recursos necessários para a execução dos serviços.
+
+**CLÁUSULA QUARTA – DO CANCELAMENTO**
+O CONTRATANTE pode cancelar o pedido em até **7 (sete) dias** a partir da data de compra, utilizando o código de cancelamento gerado no momento do pedido.
+**Código de Cancelamento:** ${cancellationCode}
+
+**CLÁUSULA QUINTA – DO FORO**
+Para dirimir quaisquer controvérsias oriundas do CONTRATO, as partes elegem o foro da comarca de Caxias do Sul, RS.
+
+E, por estarem assim justos e contratados, firmam o presente instrumento.
+
+_________________________
+Caxias do Sul, RS, ${today}
+
+_________________________________
+**Loja M&A**
+CONTRATADA
+
+_________________________________
+**${userName}**
+CONTRATANTE
+`;
+
+            document.getElementById('contractDate').textContent = today;
+            document.getElementById('contractContent').textContent = contractText;
+            
+            prepareForPrint();
+            window.print();
+        }
+
+        window.onafterprint = function() {
+            restoreFromPrint();
+            if (confirm("Seu contrato foi impresso! Deseja enviar o pedido via WhatsApp agora?")) {
+                sendOrderViaWhatsApp();
+            }
+        };
+
+        function toggleFAQ(element) {
+            element.classList.toggle('active');
+            const answer = element.querySelector('.faq-answer');
+            if (element.classList.contains('active')) {
+                answer.style.maxHeight = answer.scrollHeight + 'px';
+            } else {
+                answer.style.maxHeight = '0';
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.rating-stars span').forEach(star => {
+                star.addEventListener('click', () => {
+                    const value = parseInt(star.getAttribute('data-value'));
+                    document.querySelectorAll('.rating-stars span').forEach(s => {
+                        s.classList.remove('filled');
+                        if (parseInt(s.getAttribute('data-value')) <= value) {
+                            s.classList.add('filled');
+                        }
+                    });
+                });
+            });
+
+            setTimeout(function() {
+                document.getElementById('promoPopup').style.display = 'block';
+            }, 3000);
+            if (getCookie('cookie_consent') !== 'accepted') {
+                document.getElementById('cookieConsent').style.display = 'block';
+            }
+            updateCart();
+        });
+
+        function closePopup() {
+            document.getElementById('promoPopup').style.display = 'none';
+        }
+
+        function acceptCookies() {
+            document.getElementById('cookieConsent').style.display = 'none';
+            setCookie('cookie_consent', 'accepted', 30);
+        }
+
+        function setCookie(name, value, days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            const expires = "expires=" + date.toUTCString();
+            document.cookie = name + "=" + value + ";" + expires + ";path=/";
+        }
+
+        function getCookie(name) {
+            const cname = name + "=";
+            const decodedCookie = decodeURIComponent(document.cookie);
+            const ca = decodedCookie.split(';');
+            for(let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) === ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(cname) === 0) {
+                    return c.substring(cname.length, c.length);
+                }
+            }
+            return "";
+        }
+    </script>
+</body>
+</html>
