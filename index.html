@@ -649,6 +649,29 @@
         .purchase-details {
             font-weight: bold;
         }
+
+        /* Novas classes para a funcionalidade de busca */
+        .search-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 998; /* Abaixo do item destacado, mas acima do resto */
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+        }
+
+        .highlighted-product {
+            z-index: 999;
+            background-color: #fff;
+            border: 3px solid #febd69;
+            box-shadow: 0 0 20px rgba(254, 189, 105, 0.8), 0 5px 15px rgba(0,0,0,0.2);
+            position: relative;
+            transform: scale(1.05);
+            transition: all 0.3s ease;
+        }
     </style>
 </head>
 <body>
@@ -1040,11 +1063,37 @@
 
         function performSearch() {
             const query = document.getElementById('searchInput').value.trim().toLowerCase();
-            if (searchKeywords[query]) {
-                const targetId = searchKeywords[query];
-                document.getElementById(targetId).scrollIntoView({ behavior: 'smooth', block: 'center' });
-            } else {
-                alert("Nenhum item encontrado. Tente pesquisar por 'slides', 'gerenciador', 'website', 'ponto', 'portfólio' ou 'avaliador'.");
+            const productItems = document.querySelectorAll('.product-item');
+            let found = false;
+
+            for (let i = 0; i < productItems.length; i++) {
+                const product = productItems[i];
+                const productName = product.querySelector('h3').textContent.toLowerCase();
+                if (productName.includes(query)) {
+                    // Encontrado o produto, rolamos até ele e o destacamos
+                    product.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    
+                    // Cria e adiciona o overlay
+                    const overlay = document.createElement('div');
+                    overlay.classList.add('search-overlay');
+                    document.body.appendChild(overlay);
+
+                    // Adiciona a classe de destaque ao produto
+                    product.classList.add('highlighted-product');
+
+                    // Remove o destaque e o overlay após 1 segundo
+                    setTimeout(() => {
+                        product.classList.remove('highlighted-product');
+                        document.body.removeChild(overlay);
+                    }, 1000);
+
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                alert("Nenhum item encontrado. Tente pesquisar por palavras como 'website', 'ponto', 'portfólio' ou 'avaliador'.");
             }
         }
 
